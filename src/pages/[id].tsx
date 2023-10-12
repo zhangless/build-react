@@ -2,7 +2,6 @@ import Canvas from "src/components/Canvas";
 import ClientOnly from "src/components/ClientOnly";
 
 export default function ID({ data }: any) {
-  console.log("🚀 ～ file: [id].tsx:5 ～ ID ～ data:", data.content);
   return (
     <ClientOnly>
       {data ? (
@@ -17,13 +16,14 @@ export default function ID({ data }: any) {
 }
 
 export const getStaticPaths = async () => {
-  const res = await fetch(
-    "http://template.codebus.tech/api/web/content/publishList"
-  );
+  const url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:7002/api/web/content/publishList"
+      : "http://api.ricedog.top/api/web/content/publishList";
+  const res = await fetch(url);
   const data = await res.json();
-
   return {
-    paths: ["/3"],
+    paths: data.result.data.map((item: number) => `/${item}`),
     fallback: true,
   };
 };
@@ -33,11 +33,12 @@ export const getStaticPaths = async () => {
 // direct database queries. See the "Technical details" section.
 // 此函数在服务端的构建阶段调用，不会在客户端调用，因此这里相当于是直接查询数据库 SSG
 export async function getStaticProps({ params }: { params: { id: string } }) {
-  const res = await fetch(
-    "http:localhost:7002/api/web/content/get?id=" + (params.id || 2)
-  );
+  const url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:7002/api/web/content/get?id=" + (params.id || 2)
+      : "http://api.ricedog.top/api/web/content/get?id=" + (params.id || 2);
+  const res = await fetch(url);
   const data = await res.json();
-  console.log("🚀 a:", data.result);
 
   return {
     props: {
