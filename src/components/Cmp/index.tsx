@@ -18,7 +18,7 @@ export type Style = any;
 export interface ICmp {
   type: number;
   style: Style;
-  value: string;
+  props: any;
   onClick?: string;
 }
 

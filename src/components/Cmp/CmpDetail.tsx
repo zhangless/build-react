@@ -1,9 +1,9 @@
-export function Text({ value }: { value: string | undefined }) {
-  return <>{value}</>;
+export function Text({ props }: { props: { value: string } }) {
+  return <>{props.value}</>;
 }
 
-export function Img({ style, props }: any) {
-  return <img {...props} alt="" style={style} />;
+export function Img({ props }: { props: { src: string } }) {
+  return <img src={props.src} alt="" />;
 }
 
 export function Input({
